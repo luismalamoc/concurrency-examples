@@ -24,7 +24,7 @@ func sendRequest(url string) {
 
 func main() {
 	if len(os.Args) < 2 {
-		log.Fatalln("Usage: ro run main.go <url1> <url2> .. <urln>")
+		log.Fatalln("Usage: go run main.go <url1> <url2> .. <urln>")
 	}
 
 	for _, url := range os.Args[1:] {
