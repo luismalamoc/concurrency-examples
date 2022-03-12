@@ -25,7 +25,7 @@ public class Main {
         if(args.length < 2){
             throw new RuntimeException("\"Usage: java main <url1> <url2> .. <urln>\"");
         }
-        ExecutorService threadPool = Executors.newFixedThreadPool(args.length);
+        ExecutorService threadPool = Executors.newFixedThreadPool(10);
         List<Callable<Integer>> callableTasks = new ArrayList<>();
         for (String url: args) {
             Callable<Integer> callableTask = () -> sendRequest("https://"+url);
