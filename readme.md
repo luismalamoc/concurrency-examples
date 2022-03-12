@@ -13,5 +13,5 @@ javac Main.java
 time java Main google.com github.com quora.com bing.com youtube.com heroku.com dev.to twitter.com facebook.com gitlab.com
 
 //Python
-main.py google.com github.com quora.com bing.com youtube.com heroku.com dev.to twitter.com facebook.com gitlab.com
+time main.py google.com github.com quora.com bing.com youtube.com heroku.com dev.to twitter.com facebook.com gitlab.com
 ```

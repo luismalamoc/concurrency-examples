@@ -1,37 +1,45 @@
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    public static Integer sendRequest(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-        System.out.println("["+con.getResponseCode()+"] "+urlString);
-        con.disconnect();
-        return con.getResponseCode();
+    public static class SendRequest implements Runnable {
+        private String url;
+     
+        public SendRequest(String url) {
+            this.url = url;
+        }
+     
+        public String getUrl() {
+            return url;
+        }
+     
+        public void run() {
+            try {
+                URL url = new URL(this.url);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                System.out.println("["+con.getResponseCode()+"] "+this.url);
+                con.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) {
         if(args.length < 2){
             throw new RuntimeException("\"Usage: java main <url1> <url2> .. <urln>\"");
         }
-        ExecutorService threadPool = Executors.newFixedThreadPool(10);
-        List<Callable<Integer>> callableTasks = new ArrayList<>();
+        ExecutorService executor = Executors.newFixedThreadPool(10);
         for (String url: args) {
-            Callable<Integer> callableTask = () -> sendRequest("https://"+url);
-            callableTasks.add(callableTask);
+            SendRequest task = new SendRequest("https://"+url);
+            System.out.println("Created : " + task.getUrl());
+ 
+            executor.execute(task);
         }
-        threadPool.invokeAll(callableTasks);
-        threadPool.shutdown();
+        executor.shutdown();
     }
 }
