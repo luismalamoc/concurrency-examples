@@ -4,9 +4,10 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 def main(arg_params):
+    arg_params.pop(0)
     if len(arg_params) < 2:
         raise "Usage: python main.py <url1> <url2> .. <urln>"
-    arg_params.pop(0)
+
     url_list = ["https://"+url for url in arg_params]
     with ThreadPoolExecutor(max_workers=10) as pool:
         list(pool.map(send_request, url_list))

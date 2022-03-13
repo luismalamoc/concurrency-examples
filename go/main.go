@@ -9,16 +9,13 @@ import (
 )
 
 var wg sync.WaitGroup
-var mut sync.Mutex
 
 func sendRequest(url string) {
-	defer wg.Done()
 	res, err := http.Get(url)
 	if err != nil {
 		panic(err)
 	}
-	mut.Lock()
-	defer mut.Unlock()
+	defer wg.Done()
 	fmt.Printf("[%d] %s\n", res.StatusCode, url)
 }
 
